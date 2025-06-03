@@ -31,7 +31,13 @@ func main() {
 	}
 	_ = storage
 
-
+	// GetFileByID test
+	// file, err := storage.GetFileByID(1)
+	// if err != nil {
+	// 	log.Error("Failed to get file by ID", slog.String("error", err.Error()))
+	// 	os.Exit(1)
+	// }
+	// log.Info("File retrieved", slog.String("file", file["original_filename"]))
 
 	// TODO init router
 	// TODO start server

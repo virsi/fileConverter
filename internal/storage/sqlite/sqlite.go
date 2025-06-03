@@ -87,22 +87,22 @@ func (s *Storage) GetFileByID(id int64) (map[string]string, error) {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	var original_filename, original_format, target_format, status, file_path, result_path, error_message, created_at, updated_at string
+	var original_filename, original_format, target_format, status, file_path, result_path, error_message, created_at, updated_at sql.NullString
 	err = stmt.QueryRow(id).Scan(&original_filename, &original_format, &target_format, &status, &file_path, &result_path, &error_message, &created_at, &updated_at)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
 	task := make(map[string]string)
-	task["original_filename"] = original_filename
-	task["original_format"] = original_format
-	task["target_format"] = target_format
-	task["status"] = status
-	task["file_path"] = file_path
-	task["result_path"] = result_path
-	task["error_message"] = error_message
-	task["created_at"] = created_at
-	task["updated_at"] = updated_at
+	task["original_filename"] = original_filename.String
+	task["original_format"] = original_format.String
+	task["target_format"] = target_format.String
+	task["status"] = status.String
+	task["file_path"] = file_path.String
+	task["result_path"] = result_path.String
+	task["error_message"] = error_message.String
+	task["created_at"] = created_at.String
+	task["updated_at"] = updated_at.String
 
 	return task, nil
 }
