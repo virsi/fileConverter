@@ -10,3 +10,4 @@ var (
 	// ErrInvalidFileType = errors.New("invalid file type")
 	// ErrStorageNotInitialized = errors.New("storage not initialized")
 )
+

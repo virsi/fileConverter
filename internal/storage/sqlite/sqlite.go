@@ -78,3 +78,31 @@ func (s *Storage) SaveFile(original_filename string, original_format string, tar
 
 	return id, nil
 }
+
+func (s *Storage) GetFileByID(id int64) (map[string]string, error) {
+	const op = "storage.sqlite.GetFileById"
+
+	stmt, err := s.db.Prepare("SELECT original_filename, original_format, target_format, status, file_path, result_path, error_message, created_at, updated_at FROM conversion_tasks WHERE id = ?")
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	var original_filename, original_format, target_format, status, file_path, result_path, error_message, created_at, updated_at string
+	err = stmt.QueryRow(id).Scan(&original_filename, &original_format, &target_format, &status, &file_path, &result_path, &error_message, &created_at, &updated_at)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", op, err)
+	}
+
+	task := make(map[string]string)
+	task["original_filename"] = original_filename
+	task["original_format"] = original_format
+	task["target_format"] = target_format
+	task["status"] = status
+	task["file_path"] = file_path
+	task["result_path"] = result_path
+	task["error_message"] = error_message
+	task["created_at"] = created_at
+	task["updated_at"] = updated_at
+
+	return task, nil
+}

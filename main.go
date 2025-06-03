@@ -31,11 +31,7 @@ func main() {
 	}
 	_ = storage
 
-	id, err := storage.SaveFile("example.jpg", "jpg", "png", "new", "/path/to/file.jpg")
-	if err != nil {
-		log.Error("Failed to save file", slog.String("error", err.Error()))
-	}
-	log.Info("File saved successfully", slog.Int64("id", id))
+
 
 	// TODO init router
 	// TODO start server
