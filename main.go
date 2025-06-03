@@ -26,10 +26,16 @@ func main() {
 
 	storage, err := sqlite.NewStorage(cfg.StoragePath)
 	if err != nil {
-		log.Error("Storage is not init", slog.StringValue(err.Error())) // TODO: create err func in internal/lib/logger/slog -- slog.Attr{key: error, value: err.Error()}
+		log.Error("Storage is not init", slog.String("error", err.Error())) // TODO: create err func in internal/lib/logger/slog -- slog.Attr{key: error, value: err.Error()} slog.StringValue(err.Error())
 		os.Exit(1)
 	}
 	_ = storage
+
+	id, err := storage.SaveFile("example.jpg", "jpg", "png", "new", "/path/to/file.jpg")
+	if err != nil {
+		log.Error("Failed to save file", slog.String("error", err.Error()))
+	}
+	log.Info("File saved successfully", slog.Int64("id", id))
 
 	// TODO init router
 	// TODO start server

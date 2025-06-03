@@ -33,3 +33,6 @@ go.work.sum
 
 # Local configuration files
 conf.txt
+
+storage/*.db
+*.db
