@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/virsi/fileConverter/internal/config"
+	"github.com/virsi/fileConverter/internal/storage/sqlite"
 )
 
 const (
@@ -23,7 +24,13 @@ func main() {
 	log.Info("starting file converter service", slog.String("env", cfg.Env))
 	log.Debug("debug messages are enabled")
 
-	// TODO init storage
+	storage, err := sqlite.NewStorage(cfg.StoragePath)
+	if err != nil {
+		log.Error("Storage is not init", slog.StringValue(err.Error())) // TODO: create err func in internal/lib/logger/slog -- slog.Attr{key: error, value: err.Error()}
+		os.Exit(1)
+	}
+	_ = storage
+
 	// TODO init router
 	// TODO start server
 }
