@@ -39,6 +39,14 @@ func main() {
 	// }
 	// log.Info("File retrieved", slog.String("file", file["original_filename"]))
 
+	// UpdateFileStatus test
+	// err = storage.UpdateFileStatus(1, "processing")
+	// if err != nil {
+	// 	log.Error("Failed to update file status", slog.String("error", err.Error()))
+	// 	os.Exit(1)
+	// }
+	// log.Info("File status updated", slog.Int64("id", 1), slog.String("status", "processing"))
+
 	// TODO init router
 	// TODO start server
 }

@@ -106,3 +106,19 @@ func (s *Storage) GetFileByID(id int64) (map[string]string, error) {
 
 	return task, nil
 }
+
+func (s *Storage) UpdateFileStatus(id int64, status string) error {
+	const op = "storage.sqlite.UpdateStatus"
+
+	stmt, err := s.db.Prepare("UPDATE conversion_tasks SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	_, err = stmt.Exec(status, id)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+
+	return nil
+}
