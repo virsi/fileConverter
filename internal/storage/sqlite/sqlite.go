@@ -51,6 +51,7 @@ func NewStorage(storagePath string) (*Storage, error) {
 	return &Storage{db: db}, nil
 }
 
+// TODO: rename SaveFile to CreateTask
 func (s *Storage) SaveFile(original_filename string, original_format string, target_format string, status string, file_path string) (int64, error) {
 	const op = "storage.sqlite.SaveFile"
 
@@ -79,6 +80,7 @@ func (s *Storage) SaveFile(original_filename string, original_format string, tar
 	return id, nil
 }
 
+// TODO: rename GetFileByID to GetTaskByID
 func (s *Storage) GetFileByID(id int64) (map[string]string, error) {
 	const op = "storage.sqlite.GetFileById"
 
@@ -107,8 +109,9 @@ func (s *Storage) GetFileByID(id int64) (map[string]string, error) {
 	return task, nil
 }
 
+// TODO: rename UpdateFileStatus to UpdateTaskStatus
 func (s *Storage) UpdateFileStatus(id int64, status string) error {
-	const op = "storage.sqlite.UpdateStatus"
+	const op = "storage.sqlite.UpdateFileStatus"
 
 	stmt, err := s.db.Prepare("UPDATE conversion_tasks SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
 	if err != nil {
@@ -120,5 +123,18 @@ func (s *Storage) UpdateFileStatus(id int64, status string) error {
 		return fmt.Errorf("%s: %w", op, err)
 	}
 
+	return nil
+}
+
+func (s *Storage) DeleteFileByID(id int64) error {
+	const op = "storage.sqlite.DeleteFileByID"
+	stmt, err := s.db.Prepare("DELETE FROM conversion_tasks WHERE id = ?")
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return fmt.Errorf("%s: %w", op, err)
+	}
 	return nil
 }
