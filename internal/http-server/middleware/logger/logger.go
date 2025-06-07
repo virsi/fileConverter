@@ -1,4 +1,4 @@
-package logger
+package mwlogger
 
 import (
 	"net/http"
