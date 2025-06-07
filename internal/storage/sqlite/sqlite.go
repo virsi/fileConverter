@@ -52,18 +52,18 @@ func NewStorage(storagePath string) (*Storage, error) {
 }
 
 // TODO: rename SaveFile to CreateTask
-func (s *Storage) SaveFile(original_filename string, original_format string, target_format string, status string, file_path string) (int64, error) {
+func (s *Storage) SaveFile(original_filename string, original_format string, target_format string) (int64, error) {
 	const op = "storage.sqlite.SaveFile"
 
 	stmt, err := s.db.Prepare(`
-		INSERT INTO conversion_tasks (id, original_filename, original_format, target_format, status, file_path)
-		VALUES (NULL, ?, ?, ?, ?, ?)
+		INSERT INTO conversion_tasks (id, original_filename, original_format, target_format)
+		VALUES (NULL, ?, ?, ?)
 	`)
 	if err != nil {
 		return 0, fmt.Errorf("%s: %w", op, err)
 	}
 
-	res, err := stmt.Exec(original_filename, original_format, target_format, status, file_path)
+	res, err := stmt.Exec(original_filename, original_format, target_format)
 	if err != nil {
 		// TODO: refactor this
 		if sqliteErr, ok := err.(sqlite3.Error); ok && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
